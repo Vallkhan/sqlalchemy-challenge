@@ -94,11 +94,14 @@ def beginning_of_year(start):
     m=measurement  
         
     min_avg_max = []
-    for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).group_by(m.date).all():
+    # for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).group_by(m.date).all():
+    for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).all():
         min_avg_max.append({x[0]:{'min':x[1],'avg':x[2],'max':x[3]}})
     session.close()
     
     return jsonify(min_avg_max)
+
+
 
 @app.route('/api/v1.0/<start>/<end>')  # returns the min, avg, and max for each date with a specific start and end point
 def six_month(start, end):
@@ -107,7 +110,8 @@ def six_month(start, end):
     m=measurement
     
     tmin_tavg_tmax = []
-    for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).filter(m.date <=end).group_by(m.date).all():
+    # for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).filter(m.date <=end).group_by(m.date).all():
+    for x in session.query(m.date, func.min(m.tobs), func.avg(m.tobs), func.max(m.tobs)).filter(m.date >=start).filter(m.date <=end).all():
         tmin_tavg_tmax.append({x[0]:{'min':x[1],'avg':x[2],'max':x[3]}})
     session.close()  
     
